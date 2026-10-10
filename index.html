@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kepin Nokos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Space Grotesk', sans-serif; }
+  :root {
+    --cream: #f5f0d8;
+    --white: #ffffff;
+    --black: #000000;
+    --mint: #a8e6b8;
+    --yellow: #ffd93d;
+    --pink: #ff90b3;
+    --blue: #7cc7ff;
+    --muted: #666;
+    --red: #ff5555;
+  }
+  body { background: var(--cream); min-height: 100vh; color: var(--black); padding: 16px; }
+  .container { max-width: 480px; margin: 0 auto; }
+
+  .header { text-align: center; margin-bottom: 20px; }
+  .header .logo {
+    width: 70px; height: 70px;
+    background: var(--yellow);
+    border: 3px solid var(--black);
+    border-radius: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 12px;
+    box-shadow: 5px 5px 0 var(--black);
+  }
+  .header h1 {
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .header p { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  .card {
+    background: var(--white);
+    border: 3px solid var(--black);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 6px 6px 0 var(--black);
+    margin-bottom: 16px;
+  }
+  .card.mint { background: var(--mint); }
+  .card.yellow { background: var(--yellow); }
+  .card.pink { background: var(--pink); }
+  .card.blue { background: var(--blue); }
+
+  .card-title {
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .form-group { margin-bottom: 12px; }
+  .form-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+  .input, select {
+    width: 100%;
+    padding: 12px 14px;
+    background: var(--cream);
+    border: 3px solid var(--black);
+    border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--black);
+    outline: none;
+    box-shadow: 3px 3px 0 var(--black);
+    transition: all 0.1s;
+  }
+  .input:focus, select:focus {
+    background: var(--white);
+    transform: translate(1px, 1px);
+    box-shadow: 2px 2px 0 var(--black);
+  }
+  .input::placeholder { color: #999; font-weight: 500; }
+
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: 3px solid var(--black);
+    border-radius: 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 4px 4px 0 var(--black);
+    transition: all 0.1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--black); }
+  .btn:active { transform: translate(4px, 4px); box-shadow: 0 0 0 var(--black); }
+  .btn.pink { background: var(--pink); color: var(--black); }
+  .btn.mint { background: var(--mint); color: var(--black); }
+  .btn.yellow { background: var(--yellow); color: var(--black); }
+  .btn.blue { background: var(--blue); color: var(--black); }
+  .btn.red { background: var(--red); color: var(--white); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: 4px 4px 0 var(--black); }
+
+  .saldo-card {
+    background: var(--mint);
+    border: 3px solid var(--black);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 6px 6px 0 var(--black);
+    margin-bottom: 16px;
+  }
+  .saldo-header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .saldo-header .user-info p:first-child { font-size: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px; }
+  .saldo-header .user-info p:last-child {
+    font-weight: 700; font-size: 16px;
+    max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .logout-btn {
+    background: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--black);
+  }
+  .logout-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--black); }
+
+  .saldo-box {
+    background: var(--white);
+    border: 3px solid var(--black);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+  }
+  .saldo-box p:first-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+  }
+  .saldo-box p:last-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 32px;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+
+  /* QRIS */
+  .qris-box {
+    background: var(--white);
+    border: 3px solid var(--black);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 12px;
+  }
+  .qris-box img {
+    width: 100%;
+    max-width: 240px;
+    height: auto;
+    border: 3px solid var(--black);
+    border-radius: 10px;
+    background: #fff;
+    padding: 6px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .qris-box .qris-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .qris-box .qris-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 6px;
+    margin-bottom: 8px;
+  }
+  .copy-btn {
+    background: var(--yellow);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--black);
+    color: var(--black);
+    text-decoration: none;
+    display: inline-block;
+  }
+  .copy-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--black); }
+
+  .riwayat-item {
+    background: var(--cream);
+    border: 3px solid var(--black);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    box-shadow: 3px 3px 0 var(--black);
+  }
+  .riwayat-item .info p:first-child { font-weight: 700; font-size: 14px; }
+  .riwayat-item .info p:last-child {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px; color: var(--muted); margin-top: 2px;
+  }
+  .riwayat-item .batal-btn {
+    background: var(--red);
+    color: var(--white);
+    border: 2px solid var(--black);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 2px 2px 0 var(--black);
+  }
+  .riwayat-item .batal-btn:active { transform: translate(2px, 2px); box-shadow: 0 0 0 var(--black); }
+
+  .empty-state {
+    text-align: center;
+    padding: 24px 0;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+  }
+
+  .toggle-text { text-align: center; font-size: 13px; margin-top: 14px; }
+  .toggle-text a { color: var(--black); font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+  .hidden { display: none !important; }
+
+  @media (max-width: 480px) {
+    body { padding: 12px; }
+    .card { padding: 16px; }
+    .header h1 { font-size: 18px; }
+  }
+</style>
+
+<div class="container">
+
+  <div class="header">
+    <div class="logo">📱</div>
+    <h1>Kepin Nokos</h1>
+    <p>Jual Nomor Kosong Terpercaya</p>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="loginSection" class="card">
+    <div class="card-title">🔐 Masuk Akun</div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" id="email" class="input" placeholder="nama@email.com" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password</label>
+      <input type="password" id="password" class="input" placeholder="••••••••" />
+    </div>
+    <button onclick="login()" class="btn pink" id="loginBtn">🚀 MASUK</button>
+    <p class="toggle-text">Belum punya akun? <a onclick="toggleRegister()">Daftar</a></p>
+  </div>
+
+  <!-- REGISTER -->
+  <div id="registerSection" class="card mint hidden">
+    <div class="card-title">📝 Daftar Akun</div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input type="email" id="regEmail" class="input" placeholder="nama@email.com" />
+    </div>
+    <div class="form-group">
+      <label class="form-label">Password (min 4)</label>
+      <input type="password" id="regPassword" class="input" placeholder="••••••••" />
+    </div>
+    <button onclick="register()" class="btn mint" id="registerBtn">✅ DAFTAR SEKARANG</button>
+    <p class="toggle-text">Sudah punya akun? <a onclick="toggleLogin()">Masuk</a></p>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard" class="hidden">
+
+    <div class="saldo-card">
+      <div class="saldo-header">
+        <div class="user-info">
+          <p>HALO,</p>
+          <p id="username">-</p>
+        </div>
+        <button class="logout-btn" onclick="logout()">KELUAR</button>
+      </div>
+      <div class="saldo-box">
+        <p>💰 SALDO ANDA</p>
+        <p id="saldo">Rp0</p>
+      </div>
+    </div>
+
+    <!-- DEPOSIT + QRIS -->
+    <div class="card yellow">
+      <div class="card-title">💳 Deposit Saldo</div>
+
+      <div class="qris-box">
+        <div class="qris-label">📸 SCAN QRIS UNTUK BAYAR</div>
+        <img id="qrisImage" src="https://files.catbox.moe/21j158.jpg" alt="QRIS" />
+        <div class="qris-note">Setelah bayar, isi jumlah & klik tombol di bawah</div>
+        <a href="https://files.catbox.moe/21j158.jpg" download="qris-kepin.jpg" class="copy-btn">
+          ⬇️ DOWNLOAD QRIS
+        </a>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Jumlah Deposit</label>
+        <input type="number" id="depositJumlah" class="input" placeholder="Contoh: 10000" />
+      </div>
+      <button onclick="deposit()" class="btn blue" id="depositBtn">💸 SAYA SUDAH BAYAR</button>
+      <p style="font-size: 11px; text-align: center; margin-top: 10px; color: var(--muted); font-family: 'Space Mono', monospace;">
+        ℹ️ Admin akan verifikasi via Telegram
+      </p>
+    </div>
+
+    <!-- BELI NOKOS -->
+    <div class="card mint">
+      <div class="card-title">🛒 Beli Nomor Kosong</div>
+      <div class="form-group">
+        <label class="form-label">Aplikasi</label>
+        <select id="aplikasi" class="input">
+          <option value="Telegram">📨 Telegram</option>
+          <option value="WhatsApp">💬 WhatsApp</option>
+          <option value="Gmail">📧 Gmail</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Negara</label>
+        <select id="negara" class="input">
+          <option value="Indonesia">🇮🇩 Indonesia</option>
+          <option value="USA">🇺🇸 USA</option>
+          <option value="India">🇮🇳 India</option>
+        </select>
+      </div>
+      <button onclick="beliNokos()" class="btn pink" id="beliBtn">🎯 BELI — Rp5.000</button>
+    </div>
+
+    <!-- RIWAYAT -->
+    <div class="card">
+      <div class="card-title">📋 Riwayat Pembelian</div>
+      <ul id="riwayat"></ul>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  const API_URL = '';
+
+  let currentUser = null;
+
+  function toggleRegister() {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("registerSection").classList.remove("hidden");
+  }
+  function toggleLogin() {
+    document.getElementById("registerSection").classList.add("hidden");
+    document.getElementById("loginSection").classList.remove("hidden");
+  }
+
+  async function register() {
+    const email = document.getElementById("regEmail").value.trim();
+    const password = document.getElementById("regPassword").value.trim();
+    if (!email || !password) return alert("Isi semua!");
+
+    const btn = document.getElementById("registerBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("✅ " + data.message);
+        toggleLogin();
+      } else {
+        alert("❌ " + data.error);
+      }
+    } catch (e) {
+      alert("❌ Gagal konek ke server");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "✅ DAFTAR SEKARANG";
+    }
+  }
+
+  async function login() {
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    if (!email || !password) return alert("Isi semua!");
+
+    const btn = document.getElementById("loginBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json();
+      if (data.success) {
+        currentUser = data.email;
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("registerSection").classList.add("hidden");
+        document.getElementById("dashboard").classList.remove("hidden");
+        document.getElementById("username").innerText = currentUser;
+        updateSaldo(data.saldo);
+        updateRiwayat(data.riwayat);
+      } else {
+        alert("❌ " + data.error);
+      }
+    } catch (e) {
+      alert("❌ Gagal konek ke server");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "🚀 MASUK";
+    }
+  }
+
+  function logout() {
+    currentUser = null;
+    location.reload();
+  }
+
+  function updateSaldo(saldo) {
+    document.getElementById("saldo").innerText = `Rp${(saldo || 0).toLocaleString('id-ID')}`;
+  }
+
+  function updateRiwayat(riwayat) {
+    const el = document.getElementById("riwayat");
+    el.innerHTML = "";
+    if (!riwayat || riwayat.length === 0) {
+      el.innerHTML = "<li class='empty-state'>— Belum ada pembelian —</li>";
+      return;
+    }
+    riwayat.forEach(item => {
+      const li = document.createElement("li");
+      li.className = "riwayat-item";
+      li.innerHTML = `
+        <div class="info">
+          <p>✅ ${item.aplikasi}</p>
+          <p>${item.negara} · Rp${(item.harga || 0).toLocaleString('id-ID')}</p>
+        </div>
+        <button class="batal-btn" onclick="batal('${item.id}')">BATAL</button>
+      `;
+      el.appendChild(li);
+    });
+  }
+
+  async function refreshSaldo() {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(`${API_URL}/api/user/${encodeURIComponent(currentUser)}`);
+      const data = await res.json();
+      if (data.saldo !== undefined) {
+        updateSaldo(data.saldo);
+        updateRiwayat(data.riwayat);
+      }
+    } catch (e) {}
+  }
+
+  setInterval(refreshSaldo, 30000);
+
+  async function deposit() {
+    if (!currentUser) return;
+    const jumlah = parseInt(document.getElementById("depositJumlah").value);
+    if (!jumlah || jumlah <= 0) return alert("Jumlah tidak valid!");
+
+    const btn = document.getElementById("depositBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/deposit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentUser, jumlah })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("✅ " + data.message);
+        document.getElementById("depositJumlah").value = "";
+      } else {
+        alert("❌ " + data.error);
+      }
+    } catch (e) {
+      alert("❌ Gagal kirim ke server");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "💸 SAYA SUDAH BAYAR";
+    }
+  }
+
+  async function beliNokos() {
+    if (!currentUser) return;
+    const aplikasi = document.getElementById("aplikasi").value;
+    const negara = document.getElementById("negara").value;
+
+    const btn = document.getElementById("beliBtn");
+    btn.disabled = true;
+    btn.textContent = "⏳ Loading...";
+
+    try {
+      const res = await fetch(`${API_URL}/api/beli`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentUser, aplikasi, negara })
+      });
+      const data = await res.json();
+      if (data.success) {
+        updateSaldo(data.saldo);
+        updateRiwayat(data.riwayat);
+        alert(`✅ Nomor ${aplikasi} dari ${negara} berhasil dibeli!`);
+      } else {
+        alert("❌ " + data.error);
+      }
+    } catch (e) {
+      alert("❌ Gagal beli");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = "🎯 BELI — Rp5.000";
+    }
+  }
+
+  async function batal(id) {
+    if (!currentUser) return;
+    try {
+      const res = await fetch(`${API_URL}/api/batal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: currentUser
